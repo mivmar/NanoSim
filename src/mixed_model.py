@@ -52,24 +52,28 @@ class trunc_lognorm_gen(rv_discrete):
         return lognorm.ppf(ln_q, s, scale=m)
 
 
-def pois_geom(lam, prob, weight):
+def pois_geom(lam, prob, weight, rng=None):
+    if rng is None:
+        rng = np.random
     # Draw a random number from Poisson-Geometric distribution
     # Faster to use numpy random than using Scipy rvs
-    tmp_rand = np.random.random()
+    tmp_rand = rng.random()
     if tmp_rand < weight:
-        value = np.random.poisson(lam) + 1
+        value = rng.poisson(lam) + 1
     else:
-        value = np.random.geometric(prob)
+        value = rng.geometric(prob)
     return value
 
 
-def wei_geom(lam, k, prob, weight):
+def wei_geom(lam, k, prob, weight, rng=None):
+    if rng is None:
+        rng = np.random
     # Draw a random number from Weibull-Geometric distribution
-    tmp_rand = np.random.random()
+    tmp_rand = rng.random()
     if tmp_rand < weight:
-        value = int(round(ceil(lam * np.random.weibull(k))))
+        value = int(round(ceil(lam * rng.weibull(k))))
     else:
-        value = np.random.geometric(prob) - 1
+        value = rng.geometric(prob) - 1
 
     if value == 0:
         value = 1
