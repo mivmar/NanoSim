@@ -1216,7 +1216,7 @@ def simulation_aligned_transcriptome(model_ir, out_reads, out_error, kmer_bias, 
     out_reads.close()
     out_error.close()
 
-
+#test
 def simulation_aligned_genome(dna_type, min_l, max_l, median_l, sd_l, out_reads, out_error, kmer_bias, basecaller,
                               read_type, fastq, num_simulate, per=False, chimeric=False):
 
