@@ -1563,7 +1563,7 @@ def simulation(mode, out, dna_type, per, kmer_bias, basecaller, read_type, max_l
     error_subfiles = []
     num_simulate = int(number_aligned / num_threads)
 
-    for thread_i in range(num_threads):
+    for i in range(num_threads):
         aligned_subfile = out + "_aligned_reads{}".format(i) + ext
         error_subfile = out + "_error_profile{}".format(i)
         aligned_subfiles.append(aligned_subfile)
@@ -1575,7 +1575,7 @@ def simulation(mode, out, dna_type, per, kmer_bias, basecaller, read_type, max_l
         if thread_rngs is None:
             thread_rng = np.random
         else:
-            thread_rng = thread_rngs[thread_i]
+            thread_rng = thread_rngs[i]
             
 
         if mode == "genome":
