@@ -2171,7 +2171,7 @@ def main():
         parser.print_help(sys.stderr)
         sys.exit(1)
 
-    base_and_thread_seeds = np.random.SeedSequence(args.seed).spawn(args.threads+1)
+    base_and_thread_seeds = np.random.SeedSequence(args.seed).spawn(args.num_threads+1)
     rng = np.random.default_rng(base_and_thread_seeds[0])
     thread_rngs = [np.random.default_rng(s) for s in base_and_thread_seeds[1:]]
 
