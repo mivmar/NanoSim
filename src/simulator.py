@@ -164,7 +164,7 @@ def extract_read_pos(length, ref_len, ref_trx_structure, polya, buffer=10, rng=N
             break
 
     # TODO change the random into something truer
-    start_pos = rng.randint(0, 1+min(ref_len - length, len_before))  # make sure the retained_intron is included
+    start_pos = int(rng.integers(0, 1+min(ref_len - length, len_before)))  # make sure the retained_intron is included
 
     list_intervals = []
     ir_list = []
@@ -1669,7 +1669,7 @@ def extract_read_trx(key, length, trx_has_polya, buffer=10, rng=None):
 
     # buffer: if the extracted read is within 10 base to the reference 3' end, it's considered as reaching to the end
     # TODO change the random into something truer
-    ref_pos = rng.randint(0, 1 + seq_len[key] - length)
+    ref_pos = int(rng.integers(0, 1 + seq_len[key] - length))
     new_read = seq_dict[key][ref_pos: ref_pos + length]
     retain_polya = False
     if trx_has_polya and ref_pos + length + buffer >= seq_len[key]:  # Read reaches end of transcript
@@ -1686,7 +1686,7 @@ def extract_read(dna_type, length, s=None, rng=None):
         while True:
             key = rng.choice(list(seq_len.keys()))  # added "list" thing to be compatible with Python v3
             if length < seq_len[key]:
-                ref_pos = rng.randint(0, 1 + seq_len[key] - length)
+                ref_pos = int(rng.integers(0, 1 + seq_len[key] - length))
                 new_read = seq_dict[key][ref_pos: ref_pos + length]
                 new_read_name = key + "_" + str(ref_pos)
                 break
@@ -1716,14 +1716,14 @@ def extract_read(dna_type, length, s=None, rng=None):
             key_seq_len = seq_len[s][key]
         
         if dict_dna_type[s][key] == "circular":
-            ref_pos = rng.randint(0, 1 + key_seq_len)
+            ref_pos = int(rng.integers(0, 1 + key_seq_len))
             if length + ref_pos > key_seq_len:
                 new_read = seq_dict[s][key][ref_pos:]
                 new_read = new_read + seq_dict[s][key][0: length - key_seq_len + ref_pos]
             else:
                 new_read = seq_dict[s][key][ref_pos: ref_pos + length]
         else:
-            ref_pos = rng.randint(0, 1 + key_seq_len - length)
+            ref_pos = int(rng.integers(0, 1 + key_seq_len - length))
             new_read = seq_dict[s][key][ref_pos: ref_pos + length]
         new_read_name = s + '-' + key + "_" + str(ref_pos)
             
@@ -1731,7 +1731,7 @@ def extract_read(dna_type, length, s=None, rng=None):
     else:
         # Extract the aligned region from reference
         if dna_type == "circular":
-            ref_pos = rng.randint(0, 1 + genome_len)
+            ref_pos = int(rng.integers(0, 1 + genome_len))
             chromosome = list(seq_dict.keys())[0]
             new_read_name = chromosome + "_" + str(ref_pos)
             if length + ref_pos <= genome_len:
@@ -1747,7 +1747,7 @@ def extract_read(dna_type, length, s=None, rng=None):
 
             while True:
                 new_read = ""
-                ref_pos = rng.randint(0, 1 + genome_len)
+                ref_pos = int(rng.integers(0, 1 + genome_len))
                 for key in seq_len:
                     if ref_pos + length <= seq_len[key]:
                         new_read = seq_dict[key][ref_pos: ref_pos + length]
