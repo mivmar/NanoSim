@@ -1067,7 +1067,7 @@ def simulation_aligned_transcriptome(model_ir, out_reads, out_error, kmer_bias, 
         while True:            
             # select a random reference transcript
             ecdf_length_list_index_list = list(range(len(ecdf_length_list)))
-            ecdf_length_list_chosen_index = rng.choice(ecdf_length_list_index_list, p=[i/sum(ecdf_weight_list) for i in ecdf_weight_list], size=1)
+            ecdf_length_list_chosen_index = int(rng.choice(ecdf_length_list_index_list, p=[i/sum(ecdf_weight_list) for i in ecdf_weight_list], size=1))
             ref_trx, ref_trx_len = ecdf_length_list[ecdf_length_list_chosen_index]
 
 
