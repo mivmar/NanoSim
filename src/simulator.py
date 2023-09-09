@@ -1063,13 +1063,16 @@ def simulation_aligned_transcriptome(model_ir, out_reads, out_error, kmer_bias, 
     sampled_2d_lengths = get_length_kde(kde_aligned_2d, num_simulate, False, False) # initial sample from the KDE
     trx_sampled = set() # track transcript IDs that are associated with the KDE sample
     
+    import time 
+    s = time.time()
     while simulated < num_simulate:
         while True:            
             # select a random reference transcript
             ecdf_length_list_index_list = list(range(len(ecdf_length_list)))
-            ecdf_length_list_chosen_index = int(rng.choice(ecdf_length_list_index_list, p=[i/sum(ecdf_weight_list) for i in ecdf_weight_list], size=1))
+            ecdf_weight_list_norm_factor = sum(ecdf_weight_list)
+            ecdf_weight_list_norm = [i/ecdf_weight_list_norm_factor for i in ecdf_weight_list]
+            ecdf_length_list_chosen_index = int(rng.choice(ecdf_length_list_index_list, p=ecdf_weight_list_norm, size=1))
             ref_trx, ref_trx_len = ecdf_length_list[ecdf_length_list_chosen_index]
-
 
             
             # if this transcript was previously associated with the currect KDE sample
@@ -1216,6 +1219,7 @@ def simulation_aligned_transcriptome(model_ir, out_reads, out_error, kmer_bias, 
             
             if polya_len > 0:
                 read_mutated += "A" * polya_len
+        
 
         if fastq:  # Get head/tail qualities
             ht_quals = mm.trunc_lognorm_rvs("ht", read_type, basecaller, head + tail + polya_len).tolist()
